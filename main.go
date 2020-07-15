@@ -81,9 +81,11 @@ func newGame(xPlayer, oPlayer string, xPlayerScore, oPlayerScore, gameCount uint
 	if winner == 0 {
 		fmt.Println(xPlayer, " wins!")
 		xPlayerScore++
-	} else {
+	} else if winner == 1 {
 		fmt.Println(oPlayer, " wins!")
 		oPlayerScore++
+	} else {
+		fmt.Println("Draw!")
 	}
 	return xPlayerScore, oPlayerScore
 }
