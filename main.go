@@ -1,6 +1,7 @@
 package main
 
 import (
+	"bufio"
 	"fmt"
 	"os"
 	"os/exec"
@@ -18,13 +19,15 @@ func main() {
 	fmt.Scanln()
 	clearScreen()
 
-	var xPlayer string
-	fmt.Print("Enter Player 1 name: ")
-	fmt.Scan(&xPlayer)
+	scanner := bufio.NewScanner(os.Stdin)
 
-	var oPlayer string
-	fmt.Print("\nEnter Player 2 name: ")
-	fmt.Scan(&oPlayer)
+	fmt.Print("Enter Player 1 name: ")
+	scanner.Scan()
+	xPlayer := scanner.Text()
+
+	fmt.Print("Enter Player 2 name: ")
+	scanner.Scan()
+	oPlayer := scanner.Text()
 
 	var playGame bool = true
 	var xPlayerScore uint8 = 0
