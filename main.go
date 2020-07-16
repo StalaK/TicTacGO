@@ -60,6 +60,7 @@ func main() {
 		}
 	}
 
+	clearScreen()
 	fmt.Println("\nThank you for playing!")
 	fmt.Println("\nThe final score was")
 	color.Red(fmt.Sprint("\t", xPlayer, " :\t", xPlayerScore))
