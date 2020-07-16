@@ -153,11 +153,11 @@ func checkBoard(board [9]string) (bool, string) {
 	}
 
 	if board[3] == board[4] && board[3] == board[5] {
-		return true, board[0]
+		return true, board[3]
 	}
 
 	if board[6] == board[7] && board[6] == board[8] {
-		return true, board[0]
+		return true, board[6]
 	}
 
 	// Verticals
@@ -166,11 +166,11 @@ func checkBoard(board [9]string) (bool, string) {
 	}
 
 	if board[1] == board[4] && board[1] == board[7] {
-		return true, board[0]
+		return true, board[1]
 	}
 
 	if board[2] == board[5] && board[2] == board[8] {
-		return true, board[0]
+		return true, board[2]
 	}
 
 	// Diagonals
@@ -179,7 +179,7 @@ func checkBoard(board [9]string) (bool, string) {
 	}
 
 	if board[2] == board[4] && board[2] == board[6] {
-		return true, board[0]
+		return true, board[2]
 	}
 
 	return false, ""
