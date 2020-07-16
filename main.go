@@ -6,14 +6,16 @@ import (
 	"os"
 	"os/exec"
 	"strconv"
+
+	color "github.com/fatih/color"
 )
 
 func main() {
 	clearScreen()
-	fmt.Println("  ____    _         _____            _____  _____")
-	fmt.Println(" | _ _|  |_|   ___ |_   _| ___  ___ |   __||     |")
-	fmt.Println("  | |    | |  |  _|  | |  | .'||  _||  |  ||  |  |")
-	fmt.Println("  |_|    |_|  |___|  |_|  |__,||___||_____||_____|")
+	color.Green("  ____    _         _____            _____  _____")
+	color.Green(" | _ _|  |_|   ___ |_   _| ___  ___ |   __||     |")
+	color.Green("  | |    | |  |  _|  | |  | .'||  _||  |  ||  |  |")
+	color.Green("  |_|    |_|  |___|  |_|  |__,||___||_____||_____|")
 
 	fmt.Println("\nPress enter to begin")
 	fmt.Scanln()
@@ -42,18 +44,23 @@ func main() {
 		fmt.Scan(&playGame)
 	}
 
-	var winnerText string
+	fmt.Println("\nThank you for playing!")
+	fmt.Println("\nThe final score was")
+	color.Red(fmt.Sprint("\t", xPlayer, " :\t", xPlayerScore))
+	color.Blue(fmt.Sprint("\t", oPlayer, " :\t", oPlayerScore))
+
 	if xPlayerScore > oPlayerScore {
-		winnerText = fmt.Sprint(xPlayer, " wins!")
+		c := color.New(color.FgRed)
+		c.Print(xPlayer)
+		fmt.Print(" wins!")
 	} else if xPlayerScore < oPlayerScore {
-		winnerText = fmt.Sprint(oPlayer, " wins!")
+		c := color.New(color.FgBlue)
+		c.Print(oPlayer)
+		fmt.Print(" wins!")
 	} else {
-		winnerText = "The game ended in a draw!"
+		fmt.Println("The game ended in a draw!")
 	}
 
-	fmt.Println("\nThank you for playing!")
-	fmt.Println("\nThe final score was\n\t", xPlayer, "\t:\t", xPlayerScore, "\n\t", oPlayer, "\t:\t", oPlayerScore)
-	fmt.Println("\n", winnerText)
 	fmt.Println("\n\nPress the enter key to exit")
 	fmt.Scan()
 }
@@ -82,13 +89,17 @@ func newGame(xPlayer, oPlayer string, xPlayerScore, oPlayerScore, gameCount uint
 	}
 
 	if winner == 0 {
-		fmt.Println(xPlayer, " wins!")
+		c := color.New(color.FgRed)
+		c.Print("\n\n", xPlayer)
+		fmt.Print(" wins!")
 		xPlayerScore++
 	} else if winner == 1 {
-		fmt.Println(oPlayer, " wins!")
+		c := color.New(color.FgBlue)
+		c.Print("\n\n", oPlayer)
+		fmt.Print(" wins!")
 		oPlayerScore++
 	} else {
-		fmt.Println("Draw!")
+		fmt.Println("\n\nDraw!")
 	}
 	return xPlayerScore, oPlayerScore
 }
@@ -96,10 +107,12 @@ func newGame(xPlayer, oPlayer string, xPlayerScore, oPlayerScore, gameCount uint
 func takeMove(playerTurn uint8, xPlayer, oPlayer string, board [9]string) ([9]string, bool, bool, int8) {
 	var symbol string
 	if playerTurn == 0 {
-		fmt.Print(oPlayer)
+		c := color.New(color.FgBlue)
+		c.Print("\n\n", oPlayer)
 		symbol = "O"
 	} else {
-		fmt.Print(xPlayer)
+		c := color.New(color.FgRed)
+		c.Print("\n\n", xPlayer)
 		symbol = "X"
 	}
 
@@ -174,17 +187,37 @@ func checkBoard(board [9]string) (bool, string) {
 
 func printGrid(board [9]string, xPlayer, oPlayer string, xPlayerScore, oPlayerScore, gameCount uint8) {
 	clearScreen()
-	fmt.Println("X:", xPlayer, "(", xPlayerScore, ") vs. O:", oPlayer, "(", oPlayerScore, ") -- Game ", gameCount)
+	xPrinter := color.New(color.FgRed)
+	oPrinter := color.New(color.FgBlue)
+	xPrinter.Print(xPlayer)
+	fmt.Print(" (", xPlayerScore, ") vs. ")
+	oPrinter.Print(oPlayer)
+	fmt.Print(" (", oPlayerScore, ") -- Game", gameCount)
 
-	fmt.Println("\n        |       |")
-	fmt.Println("  ", board[0], "   |  ", board[1], "  |  ", board[2])
-	fmt.Println("________|_______|________")
-	fmt.Println("        |       |")
-	fmt.Println("  ", board[3], "   |  ", board[4], "  |  ", board[5])
-	fmt.Println("________|_______|________")
-	fmt.Println("        |       |")
-	fmt.Println("  ", board[6], "   |  ", board[7], "  |  ", board[8])
-	fmt.Println("        |       |")
+	fmt.Print("\n\n        |       |")
+	fmt.Print("\n    ")
+	printSymbol(board[0])
+	fmt.Print("   |   ")
+	printSymbol(board[1])
+	fmt.Print("   |   ")
+	printSymbol(board[2])
+	fmt.Print("\n________|_______|________")
+	fmt.Print("\n        |       |")
+	fmt.Print("\n    ")
+	printSymbol(board[3])
+	fmt.Print("   |   ")
+	printSymbol(board[4])
+	fmt.Print("   |   ")
+	printSymbol(board[5])
+	fmt.Print("\n________|_______|________")
+	fmt.Print("\n        |       |")
+	fmt.Print("\n    ")
+	printSymbol(board[6])
+	fmt.Print("   |   ")
+	printSymbol(board[7])
+	fmt.Print("   |   ")
+	printSymbol(board[8])
+	fmt.Print("\n        |       |")
 }
 
 func clearScreen() {
@@ -205,4 +238,16 @@ func validGuess(guess string) (bool, int64) {
 	}
 
 	return false, 0
+}
+
+func printSymbol(symbol string) {
+	xPrinter := color.New(color.FgRed)
+	oPrinter := color.New(color.FgBlue)
+	if symbol == "X" {
+		xPrinter.Print(symbol)
+	} else if symbol == "O" {
+		oPrinter.Print(symbol)
+	} else {
+		fmt.Print(symbol)
+	}
 }
