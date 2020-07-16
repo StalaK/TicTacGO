@@ -6,6 +6,7 @@ import (
 	"os"
 	"os/exec"
 	"strconv"
+	"strings"
 
 	color "github.com/fatih/color"
 )
@@ -40,8 +41,23 @@ func main() {
 		gameCount++
 		xPlayerScore, oPlayerScore = newGame(xPlayer, oPlayer, xPlayerScore, oPlayerScore, gameCount)
 
-		fmt.Println("\nPlay another game? (true/false)")
-		fmt.Scan(&playGame)
+		var playAgain string
+		validPlayAgainInput := false
+		for validPlayAgainInput == false {
+			fmt.Println("\nPlay another game? (Y/N)")
+			fmt.Scan(&playAgain)
+			playAgain = strings.ToUpper(playAgain)
+
+			if playAgain == "Y" || playAgain == "YES" || playAgain == "TRUE" {
+				playGame = true
+				validPlayAgainInput = true
+			} else if playAgain == "N" || playAgain == "NO" || playAgain == "FALSE" {
+				playGame = false
+				validPlayAgainInput = true
+			} else {
+				color.Yellow("Please enter Y to play again, or N to end the game")
+			}
+		}
 	}
 
 	fmt.Println("\nThank you for playing!")
